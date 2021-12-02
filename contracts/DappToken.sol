@@ -14,14 +14,24 @@ contract DappToken {
         balanceOf[msg.sender] = _initialSupply; // msg global variable. sender is the address that called function
     }
 
+    event Transfer(
+        address indexed _from,
+        address indexed _to,
+        uint256 _value
+    );
+
     // Transfer
     // Exception if account doesn't have enough
     // Return a boolean
-    // Transfer Event
     function transfer(address _to, uint256 _value) public returns (bool success) {
         require(balanceOf[msg.sender] >= _value);   // Require - Only continue if require() functions. Otherwise, throw error & refund gas.
         // Transfer the balance
         balanceOf[msg.sender] -= _value;
         balanceOf[_to] += _value;
+
+        // Transfer Event
+        emit Transfer(msg.sender, _to, _value);
+
+        return true;
     }
 }
